@@ -1,7 +1,7 @@
 import System.IO  
 
 main = do  
-    handle <- openFile "data/2020/day1.txt" ReadMode  
+    handle <- openFile "data/2020/Day1.txt" ReadMode  
     contents <- hGetContents handle  
     print $ sums2To2020 (map read $ lines contents)
     print $ sums3To2020 (map read $ lines contents)
