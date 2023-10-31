@@ -19,7 +19,7 @@ findSeat passesIds possibleSeats = case result of
     Just value -> candidates !! value
     where
         candidates = map (+1) $ elemIndices True $ map (`notElem` passesIds) possibleSeats
-        result = trace (show candidates) elemIndex True $ map (\x -> (x - 1) `elem` passesIds && (x + 1) `elem` passesIds) candidates
+        result = elemIndex True $ map (\x -> (x - 1) `elem` passesIds && (x + 1) `elem` passesIds) candidates
 
 parseBoardingPass :: Int -> [Char] -> Int
 parseBoardingPass value [] = value
