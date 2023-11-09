@@ -13,17 +13,30 @@ main = do
     let target = "shinygold"
 
     let bagList = map parseLine $ lines contents
+    let bagMap = Map.fromList bagList
 
     let reverseBagList = Map.fromList $ reverseChildrenParents bagList
     --print reverseBagList
     let results = nub $ searchInTree reverseBagList target
-    print $ results
+    -- Part 1
+    -- -1 because the original bag is contained inr esults
     print $ length results - 1
-    --print $ getChildren bagMap "wavywhite"
+
+    print $ numberOfBagsContained  bagMap target
+
+
 
 
     hClose handle
 
+
+numberOfBagsContained :: Map.Map String [(Int, String)] -> String -> Int
+numberOfBagsContained bagMap bag =  sum (map (totalNestedChildren bagMap) children) + 1
+    where
+        children = fromMaybe [] $ Map.lookup bag bagMap
+
+
+totalNestedChildren bagMap (amount, directChild) = amount * numberOfBagsContained bagMap directChild
 
 searchInTree :: Map.Map String [String] -> String -> [String]
 searchInTree _ [] = []
