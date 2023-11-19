@@ -2,6 +2,7 @@ import System.IO
 import Debug.Trace
 import Data.List
 import Data.Maybe
+import qualified Data.Map as Map
 
 data Status = Occupied | Empty deriving (Show, Eq)
 data Coordinates = Coordinates {row :: Int, column :: Int} deriving (Show, Eq, Ord)
@@ -22,7 +23,7 @@ main = do
     hClose handle
 
 findEquilibrumRound :: [Seat] -> Int -> Int
-findEquilibrumRound seats roundNumber = trace (show roundNumber) $ if newRoundSeats == seats
+findEquilibrumRound seats roundNumber = if newRoundSeats == seats
     then
         length $ filter (\x -> status x == Occupied) seats
     else
@@ -36,21 +37,25 @@ calculateNextRound seats = nextRound
     where
         seatsCoordinates = map coordinates seats
         occupiedSeatsInfluence = concatMap (surroundingCoordinates . coordinates) $ filter (\x -> status x == Occupied) seats
-        --61% 
-        occupiedNeighbors = map (\x -> (head x, length x)) $ group $ sort $ filter (`elem` seatsCoordinates) occupiedSeatsInfluence
-        nextRound = map (caculateNewStatus occupiedNeighbors) seats
+        occupiedNeighbors = fillNeighborMap occupiedSeatsInfluence Map.empty
+        nextRound = map (caculateNewStatus occupiedNeighbors ) seats
 
 
--- 38%
-caculateNewStatus ::  [(Coordinates, Int)] -> Seat -> Seat
+fillNeighborMap :: [Coordinates] -> Map.Map Coordinates Int -> Map.Map Coordinates Int
+fillNeighborMap [] map = map
+fillNeighborMap (currentCoordinates:remaining) map = fillNeighborMap remaining newMap
+    where
+        newMap = Map.insertWith (+) currentCoordinates 1 map
+
+
+caculateNewStatus ::  Map.Map Coordinates Int -> Seat -> Seat
 caculateNewStatus occupiedNeighbors seat =
     case (status seat, noNeighbors, moreThan4Neighbors) of
         (Empty, True, _) -> Seat Occupied (coordinates seat)
         (Occupied, _, True) -> Seat Empty (coordinates seat)
         (status, _, _)-> Seat status (coordinates seat)
     where
-        -- 38
-        neighborCount = snd $ fromMaybe (Coordinates 0 0, 0) $ find (\x -> coordinates seat == fst x) occupiedNeighbors
+        neighborCount = fromMaybe 0 (Map.lookup (coordinates seat) occupiedNeighbors)
         noNeighbors = neighborCount == 0
         moreThan4Neighbors = neighborCount >= 4
 
