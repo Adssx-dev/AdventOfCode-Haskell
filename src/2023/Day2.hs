@@ -12,11 +12,23 @@ main = do
     contents <- hGetContents handle
 
     let games = map loadGame $ lines contents
+
+    -- part 1
     let possibleGames = filter (isGamePossible [12, 13, 14]) games
-    
     print $ sum $ map fst possibleGames
 
+    print $ sum $ map calculateGamePower games 
+
     hClose handle
+
+calculateGamePower game = product minCubes
+    where
+        minCubes = minimumGameCubeNumber game
+
+minimumGameCubeNumber game = map maximum $ transpose rounds
+    where 
+        rounds = snd game
+
 
 isGamePossible cubeAmount game = valid
     where
