@@ -16,10 +16,23 @@ main = do
     handle <- openFile "data/2023/Day3.txt" ReadMode
     contents <- hGetContents handle
 
-    print $ parseData (lines contents) 0
-    --print s
+    --print $ parseData (lines contents) 0
+    print $ part1 $ lines contents
 
     hClose handle
+
+part1 lines = sum $ map val keptValues
+    where
+        (values, symbols) = parseData lines 0
+        symbolCoordinates = map symbCoords symbols
+        keptValues = filter (any (`elem` symbolCoordinates) . getBoundingBox) values
+
+getBoundingBox :: Value -> [Coordinates]
+getBoundingBox val = [Coordinates{row=y, col=x} | x <- [minimum cols - 1 .. (maximum cols + 1)],  y <- [(minimum rows - 1)..(maximum rows + 1)]]
+    where
+        rows = map row $ valCoords val
+        cols = map col $ valCoords val
+
 
 parseData :: [[Char]] -> Int -> ([Value], [Symbol])
 parseData [] _ = ([], [])
@@ -36,13 +49,19 @@ parseLine ('.':xs) maybeVal row col allValues allSymbols = parseLine xs Nothing 
         newAllValues = case maybeVal of
             Nothing -> allValues
             Just v -> v:allValues
-parseLine (x:xs) maybeVal row col allValues allSymbols
+parseLine (x:xs) Nothing row col allValues allSymbols
     | isDigit x     = parseLine xs (Just newVal) row (col+1) allValues allSymbols
-    | otherwise     = parseLine xs maybeVal row (col+1) allValues (newSymbol:allSymbols)
+    | otherwise     = parseLine xs Nothing row (col+1) allValues (newSymbol:allSymbols)
     where
-        newVal = loadNumber maybeVal (read [x] :: Int) row col
+        newVal = loadNumber Nothing (read [x] :: Int) row col
         newSymbol = loadSymbol x row col
 
+parseLine (x:xs) (Just v) row col allValues allSymbols
+    | isDigit x     = parseLine xs (Just newVal) row (col+1) allValues allSymbols
+    | otherwise     = parseLine xs Nothing row (col+1) (v:allValues) (newSymbol:allSymbols)
+    where
+        newVal = loadNumber (Just v) (read [x] :: Int) row col
+        newSymbol = loadSymbol x row col
 
 loadNumber Nothing val row col = Value{val=val, valCoords=[Coordinates{row,col}]}
 loadNumber (Just previousValue) newValue row col = Value{val=(10 * val previousValue) + newValue, valCoords=Coordinates{row,col}:valCoords previousValue}
