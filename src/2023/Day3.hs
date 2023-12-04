@@ -18,14 +18,31 @@ main = do
 
     --print $ parseData (lines contents) 0
     print $ part1 $ lines contents
+    print $ part2 $ lines contents
 
     hClose handle
+
+
+part2 lines = sum $ map (getGearProduct values) gears 
+    where
+        (values, symbols) = parseData lines 0
+        gears = filter (\x -> symb x == '*') symbols
+
+
+getGearProduct values gear  = gearProduct
+    where
+        gearCoordinates = symbCoords gear
+        adjacentValues = map val $ filter (\x -> gearCoordinates `elem` getBoundingBox x) values
+        gearProduct = if length adjacentValues < 2
+            then 0
+            else product adjacentValues
 
 part1 lines = sum $ map val keptValues
     where
         (values, symbols) = parseData lines 0
         symbolCoordinates = map symbCoords symbols
         keptValues = filter (any (`elem` symbolCoordinates) . getBoundingBox) values
+
 
 getBoundingBox :: Value -> [Coordinates]
 getBoundingBox val = [Coordinates{row=y, col=x} | x <- [minimum cols - 1 .. (maximum cols + 1)],  y <- [(minimum rows - 1)..(maximum rows + 1)]]
