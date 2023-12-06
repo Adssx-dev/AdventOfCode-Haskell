@@ -6,7 +6,7 @@ import Data.Maybe
 import Data.Char
 
 
-data Card = Card {number :: Int, winnings :: [Int], numbers :: [Int], value :: Int} deriving (Show, Eq, Ord)
+data Card = Card {number :: Int, winnings :: [Int], numbers :: [Int] } deriving (Show, Eq, Ord)
 
 main = do
     handle <- openFile "data/2023/Day4.txt" ReadMode
@@ -47,7 +47,7 @@ cardScore card = score
             then 0
             else 2 ^ (numberOfWinningNumbers - 1)
 
-parseCard line = Card{number=cardNumber, winnings=winningNumbers, numbers=cardNumbers, value = 0}
+parseCard line = Card{number=cardNumber, winnings=winningNumbers, numbers=cardNumbers}
     where
         [cardPart, numbersPart] = splitOn (==':') line
         [_, cardNumberStr] = words cardPart
