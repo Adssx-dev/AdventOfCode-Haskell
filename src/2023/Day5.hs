@@ -21,10 +21,15 @@ main = do
 
     let maps = map parseMap mapsStr
     let allSeedsFinalValues = map (traverseMaps maps) seeds
-    print $ head $ sort allSeedsFinalValues
+    print $ minimum allSeedsFinalValues
+
+    print $ minimum $ part2 seeds maps
 
 
     hClose handle
+
+part2 [] _ = [999999999]
+part2 (start:count:xs) maps = minimum (map (traverseMaps maps) [start..(start + count)]) : part2 xs maps
 
 traverseMaps :: [[MapLine]] -> Int -> Int
 traverseMaps nextMaps value
