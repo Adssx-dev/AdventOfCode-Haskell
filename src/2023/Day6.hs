@@ -22,19 +22,19 @@ main = do
 part2 :: [String] -> Int
 part2 [timesStr, distancesStr] = result
     where
-        time = read (concat $ tail $ words timesStr) :: Float
-        distance = read (concat $ tail $ words distancesStr) :: Float
-        result =  numberOfIntegerQradraticSolutions (-1) time (-distance - 0.00000000001)
+        time = read (concat $ tail $ words timesStr) :: Double
+        distance = read (concat $ tail $ words distancesStr) :: Double
+        result =  numberOfIntegerQradraticSolutions (-1) time (-distance - 0.1)
 
 part1 :: [String] -> Int
 part1 [timesStr, distancesStr] = product possibilities
     where
         times = map read (tail $ words timesStr) :: [Int]
         distances = map read (tail $ words distancesStr) :: [Int]
-        zipped = zip (map fromIntegral times :: [Float]) (map fromIntegral distances :: [Float])
-        possibilities = map (\(t, d) -> numberOfIntegerQradraticSolutions (-1) t (-d - 0.001)) zipped
+        zipped = zip (map fromIntegral times :: [Double]) (map fromIntegral distances :: [Double])
+        possibilities = map (\(t, d) -> numberOfIntegerQradraticSolutions (-1) t (-d - 0.1)) zipped
 
-numberOfIntegerQradraticSolutions :: Float -> Float -> Float -> Int
+numberOfIntegerQradraticSolutions :: Double -> Double -> Double -> Int
 numberOfIntegerQradraticSolutions a b c =  floor largeRoot - ceiling smallRoot + 1
     where
         delta = b * b - 4 * a * c
