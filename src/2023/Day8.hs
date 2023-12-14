@@ -5,20 +5,47 @@ import Data.Function
 import Data.Maybe
 import Data.Char
 
-import qualified Data.Map as Map  
+import qualified Data.Map as Map
 
 main = do
     handle <- openFile "data/2023/Day8.txt" ReadMode
     contents <- hGetContents handle
 
-    let allLines = lines contents
-    let directions = cycle $ head allLines
-    let tree = Map.fromList $ loadTree (tail $ tail allLines) []
-    print $ browseTree tree directions "AAA" 0
-    --print $ part1 (lines contents)
-    --print $ part2 (lines contents)
+    print $ part1 (lines contents)
+    print $ part2 (lines contents)
 
     hClose handle
+
+-- Calculate the cycle length from a starting node to a node ending by "Z"
+findCycleLength :: Map.Map String ([Char], [Char]) -> [Char] -> Int -> String -> Int
+findCycleLength _ _ count (_:_:'Z':_) = count
+findCycleLength tree (currentDirection:nextDirections) count node = findCycleLength tree nextDirections (count + 1) (getNextNode tree currentDirection node) 
+
+
+part2 lines = foldr lcm 1 cycleLengths
+    where
+        allLines = lines
+        directions = cycle $ head allLines
+        tree = Map.fromList $ loadTree (tail $ tail allLines) []
+        startingNodes = filter (endsWithLetter 'A') $ Map.keys tree
+        cycleLengths = map (findCycleLength tree directions 0) startingNodes
+
+
+endsWithLetter :: Char -> String -> Bool
+endsWithLetter letter str = last str == letter
+
+getNextNode :: Map.Map String ([Char], [Char]) -> Char -> String -> String
+getNextNode tree currentDirection node = if currentDirection == 'L'
+            then fst children
+            else snd children
+    where
+        children = fromMaybe ("", "") $ Map.lookup node tree
+
+part1 lines = browseTree tree directions "AAA" 0
+    where
+        allLines = lines
+        directions = cycle $ head allLines
+        tree = Map.fromList $ loadTree (tail $ tail allLines) []
 
 browseTree :: Map.Map String ([Char], [Char]) -> [Char] -> String -> Int -> Int
 browseTree _ _ "ZZZ" count = count
