@@ -11,16 +11,20 @@ main = do
     handle <- openFile "data/2023/Day9.txt" ReadMode
     contents <- hGetContents handle
 
-    print $ predictNext [10, 13, 16, 21, 30, 45]
-    print $ part1 (lines contents)
-    --print $ part2 (lines contents)
+    let lists = map (\x -> map read (words x) :: [Int]) (lines  contents)
+
+    print $ part1 lists
+    print $ part2 lists
 
     hClose handle
 
-part1 lines = sum nextElements
+part1 lists = sum nextElements
     where
-        lists = map (\x -> map read (words x) :: [Int]) lines 
         nextElements = map predictNext lists
+
+part2 lists = sum nextElements
+    where
+        nextElements = map predictPrevious lists
 
 predictNext :: [Int] -> Int
 predictNext lst = if all (==0) derivative 
@@ -28,5 +32,13 @@ predictNext lst = if all (==0) derivative
     else last lst + predictNext derivative
     where
         derivative = derivate lst
+
+predictPrevious :: [Int] -> Int
+predictPrevious lst = if all (==0) derivative 
+    then head lst
+    else head lst - predictPrevious derivative
+    where
+        derivative = derivate lst
+
 
 derivate lst = zipWith (-) (tail lst) lst
