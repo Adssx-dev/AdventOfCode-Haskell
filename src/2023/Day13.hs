@@ -26,7 +26,7 @@ findMirrorPosition pattern =  100 * fromMaybe 0 indexY + fromMaybe 0 indexX
         indexY = (+1) <$> findIndex equalWithinLimits splitsY
         indexX = (+1) <$> findIndex equalWithinLimits splitsX
 
-generateAllPossibleSplits lst = zip
+generateAllPossibleSplits lst = sortBy (compare `on` length) $ zip
     (map reverse $ drop 1 $ init $ inits lst)
     (drop 1 $ init $ tails lst)
 
