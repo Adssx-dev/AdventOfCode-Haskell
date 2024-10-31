@@ -2,8 +2,6 @@ import System.IO
 import Debug.Trace
 import Data.List
 
-data Status = StatusDone [Int] | StatusRunning [Int]
-
 main = do
     handle <- openFile "data/2015/Day1.txt" ReadMode
     contents <- hGetContents handle
