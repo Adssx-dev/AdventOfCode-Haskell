@@ -1,0 +1,62 @@
+cabal-version:      2.4
+name:               AdventOfCode-Haskell
+version:            0.1.0.0
+
+-- A short (one-line) description of the package.
+-- synopsis:
+
+-- A longer description of the package.
+-- description:
+
+-- A URL where users can report bugs.
+-- bug-reports:
+
+-- The license under which the package is released.
+-- license:
+author:             Adssx-dev
+maintainer:         adssx.dev@gmail.com
+
+-- A copyright notice.
+-- copyright:
+-- category:
+extra-source-files: CHANGELOG.md
+
+executable AdventOfCode-Haskell
+    main-is:          Main.hs
+
+    -- Modules included in this executable, other than Main.
+    other-modules: Solutions.Y2015
+        , Solutions.Y2015.Day1
+        , Solutions.Y2015.Day2
+        , Solutions.Y2015.Day3
+        , Solutions.Y2015.Day4
+        , Solutions.Y2015.Day5
+        , Solutions.Y2015.Day6
+        , Solutions.Y2015.Day7
+        , Solutions.Y2015.Day8
+        , Solutions.Y2015.Day9
+        , Solutions.Y2015.Day10
+        , Solutions.Y2015.Day11
+        , Solutions.Y2015.Day12
+        , Solutions.Y2015.Day13
+        , Solutions.Y2015.Day14
+        , Solutions.Y2015.Day15
+        , Solutions.Y2015.Day16
+        , Solutions.Y2015.Day17
+        , Solutions.Y2015.Day18
+        , Solutions.Y2015.Day19
+        , Solutions.Y2015.Day20
+        , Solutions.Y2015.Day21
+        , Solutions.Y2015.Day22
+        , Solutions.Y2015.Day23
+        , Solutions.Y2015.Day24
+        , Solutions.Y2015.Day25
+
+    -- LANGUAGE extensions used by modules in this package.
+    -- other-extensions:
+    build-depends:    
+        base ^>=4.17.2.0
+        , containers
+        , optparse-applicative
+    hs-source-dirs:   src
+    default-language: Haskell2010

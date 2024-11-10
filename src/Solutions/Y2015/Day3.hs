@@ -1,3 +1,8 @@
+module Solutions.Y2015.Day3
+( part1
+, part2
+) where
+
 import System.IO
 import Debug.Trace
 import Data.List
@@ -13,11 +18,11 @@ main = do
 
     hClose handle
 
-part1 :: [Char] -> Int
-part1 inputStr = length $ nub $ presentsInDelivery inputStr
+part1 :: [Char] -> Maybe Int
+part1 inputStr = Just $ length $ nub $ presentsInDelivery inputStr
 
-part2 :: [Char] -> Int
-part2 inputStr = length $ nub (housesSanta1 ++ housesSanta2)
+part2 :: [Char] -> Maybe Int
+part2 inputStr = Just $ length $ nub (housesSanta1 ++ housesSanta2)
     where
         (santa1, santa2) = splitEvenOdd inputStr
         housesSanta1 = presentsInDelivery santa1

@@ -1,0 +1,30 @@
+
+-- days :: Map Int (Day, String)
+-- days =
+--   Map.fromList . zip (concatMap (replicate 25) [2015..2024])  $ cycle [1..25] $
+--     [ (Day01.runDay, "input/Day01.txt"),
+--       (Day02.runDay, "input/Day02.txt"),
+--       (Day03.runDay, "input/Day03.txt"),
+--       (Day04.runDay, "input/Day04.txt"),
+--       (Day05.runDay, "input/Day05.txt"),
+--       (Day06.runDay, "input/Day06.txt"),
+--       (Day07.runDay, "input/Day07.txt"),
+--       (Day08.runDay, "input/Day08.txt"),
+--       (Day09.runDay, "input/Day09.txt"),
+--       (Day10.runDay, "input/Day10.txt"),
+--       (Day11.runDay, "input/Day11.txt"),
+--       (Day12.runDay, "input/Day12.txt"),
+--       (Day13.runDay, "input/Day13.txt"),
+--       (Day14.runDay, "input/Day14.txt"),
+--       (Day15.runDay, "input/Day15.txt"),
+--       (Day16.runDay, "input/Day16.txt"),
+--       (Day17.runDay, "input/Day17.txt"),
+--       (Day18.runDay, "input/Day18.txt"),
+--       (Day19.runDay, "input/Day19.txt"),
+--       (Day20.runDay, "input/Day20.txt"),
+--       (Day21.runDay, "input/Day21.txt"),
+--       (Day22.runDay, "input/Day22.txt"),
+--       (Day23.runDay, "input/Day23.txt"),
+--       (Day24.runDay, "input/Day24.txt"),
+--       (Day25.runDay, "input/Day25.txt")
+--     ]

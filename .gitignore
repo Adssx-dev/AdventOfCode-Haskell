@@ -1,4 +1,5 @@
 data/*
+dist-newstyle/*
 .vscode
 *.prof
 *.o
