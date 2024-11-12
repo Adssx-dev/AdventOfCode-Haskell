@@ -8,6 +8,14 @@ import System.FilePath.Posix
 import System.IO
 
 
+data LogEntry = LogEntry {
+  year :: Int
+, day :: Int
+, part :: Int
+, expectedResult :: Maybe Int
+, actualResult :: Maybe Int
+} deriving (Show, Eq, Ord)
+
 globalMap :: Map.Map Int (Map.Map Int ([Char] -> Maybe Int, [Char] -> Maybe Int))
 globalMap = Map.fromList . zip [2015..] $
     [ Solutions.Y2015.dayMap
@@ -16,15 +24,36 @@ globalMap = Map.fromList . zip [2015..] $
 main = do
     opts <- getProgramOptions
     print opts
-    let fcn = case (day opts, part opts) of
-            (Nothing, _) -> error "No day provided" 
-            (_, Nothing) -> error "No part provided"
-            (Just d, Just p) -> getSolutionFunction (year opts) d p
+    res <- case (OptionsParser.day opts, OptionsParser.part opts) of
+            (Just d, Just p) -> runDayPart (OptionsParser.year opts) d p
+            (Just d, Nothing) -> runDay (OptionsParser.year opts) d
+            _ -> runYear (OptionsParser.year opts)
 
-    input <- getDayInput (year opts) (day opts)
-    print $ case fcn of
-        Nothing -> error "Could not find function"
-        Just f ->  f input
+    print res
+
+runYear :: Int -> IO [LogEntry]
+runYear year = concat <$> traverse (runDay year) [1..25]
+
+
+runDay :: Int -> Int -> IO [LogEntry]
+runDay year day = concat <$> traverse (runDayPart year day) [1, 2]
+
+runDayPart :: Int -> Int -> Int -> IO [LogEntry]
+runDayPart year day part = do
+    solutions <- getDaySolutions year day
+    let partSolution = case part of
+            1 -> fst  solutions
+            2 -> snd  solutions
+            _ -> error $ "Requested invalid part : " ++ show part
+    input <- getDayInput year day
+    let calculatedResult = case fcn of
+            (Just f) -> f  input
+            Nothing -> Nothing
+    let result = [LogEntry {Main.year=year, Main.day=day, Main.part=part, expectedResult=partSolution, actualResult=calculatedResult}]
+    return result
+    where
+        fcn = getSolutionFunction year day part
+
 
 
 -- main = print $ case fcn of
@@ -46,16 +75,15 @@ getSolutionFunction year day part
             where
                 selectedYear = Map.lookup year globalMap
 
-getDayInput _ Nothing = error "Could not get day input as day is not defined"
-getDayInput year (Just day) = do
+getDayInput :: (Show p, Show a) => p -> a -> IO String
+getDayInput year day = do
         handle <- openFile path ReadMode
         hGetContents handle
     where
         path = "data/" </> show year </> "Day" ++ show day <.> ".txt"
 
-getDaySolutions :: Int -> Maybe Int -> IO (Maybe Int, Maybe Int)
-getDaySolutions _ Nothing = error "Could not get day input as day is not defined"
-getDaySolutions year (Just day) = do
+getDaySolutions :: Int -> Int -> IO (Maybe Int, Maybe Int)
+getDaySolutions year day = do
         handle <- openFile path ReadMode
         contents <- hGetContents handle
         let result = fmap (map read) $  words <$> safeHead (drop (day - 1) (lines contents)) :: Maybe [Int]
