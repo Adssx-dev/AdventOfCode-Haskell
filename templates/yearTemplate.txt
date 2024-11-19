@@ -1,0 +1,58 @@
+module Solutions.Y{{YEAR}}
+where
+
+import Data.Map as Map
+import Solutions.Y{{YEAR}}.Day1
+import Solutions.Y{{YEAR}}.Day2
+import Solutions.Y{{YEAR}}.Day3
+import Solutions.Y{{YEAR}}.Day4
+import Solutions.Y{{YEAR}}.Day5
+import Solutions.Y{{YEAR}}.Day6
+import Solutions.Y{{YEAR}}.Day7
+import Solutions.Y{{YEAR}}.Day8
+import Solutions.Y{{YEAR}}.Day9
+import Solutions.Y{{YEAR}}.Day10
+import Solutions.Y{{YEAR}}.Day11
+import Solutions.Y{{YEAR}}.Day12
+import Solutions.Y{{YEAR}}.Day13
+import Solutions.Y{{YEAR}}.Day14
+import Solutions.Y{{YEAR}}.Day15
+import Solutions.Y{{YEAR}}.Day16
+import Solutions.Y{{YEAR}}.Day17
+import Solutions.Y{{YEAR}}.Day18
+import Solutions.Y{{YEAR}}.Day19
+import Solutions.Y{{YEAR}}.Day20
+import Solutions.Y{{YEAR}}.Day21
+import Solutions.Y{{YEAR}}.Day22
+import Solutions.Y{{YEAR}}.Day23
+import Solutions.Y{{YEAR}}.Day24
+import Solutions.Y{{YEAR}}.Day25
+
+dayMap :: Map Int ([Char] -> Maybe Int, [Char] -> Maybe Int)
+dayMap = Map.fromList . zip [1..] $
+    [ (Solutions.Y{{YEAR}}.Day1.part1, Solutions.Y{{YEAR}}.Day1.part2)
+    , (Solutions.Y{{YEAR}}.Day2.part1, Solutions.Y{{YEAR}}.Day2.part2)
+    , (Solutions.Y{{YEAR}}.Day3.part1, Solutions.Y{{YEAR}}.Day3.part2)
+    , (Solutions.Y{{YEAR}}.Day4.part1, Solutions.Y{{YEAR}}.Day4.part2)
+    , (Solutions.Y{{YEAR}}.Day5.part1, Solutions.Y{{YEAR}}.Day5.part2)
+    , (Solutions.Y{{YEAR}}.Day6.part1, Solutions.Y{{YEAR}}.Day6.part2)
+    , (Solutions.Y{{YEAR}}.Day7.part1, Solutions.Y{{YEAR}}.Day7.part2)
+    , (Solutions.Y{{YEAR}}.Day8.part1, Solutions.Y{{YEAR}}.Day8.part2)
+    , (Solutions.Y{{YEAR}}.Day9.part1, Solutions.Y{{YEAR}}.Day9.part2)
+    , (Solutions.Y{{YEAR}}.Day10.part1, Solutions.Y{{YEAR}}.Day10.part2)
+    , (Solutions.Y{{YEAR}}.Day11.part1, Solutions.Y{{YEAR}}.Day11.part2)
+    , (Solutions.Y{{YEAR}}.Day12.part1, Solutions.Y{{YEAR}}.Day12.part2)
+    , (Solutions.Y{{YEAR}}.Day13.part1, Solutions.Y{{YEAR}}.Day13.part2)
+    , (Solutions.Y{{YEAR}}.Day14.part1, Solutions.Y{{YEAR}}.Day14.part2)
+    , (Solutions.Y{{YEAR}}.Day15.part1, Solutions.Y{{YEAR}}.Day15.part2)
+    , (Solutions.Y{{YEAR}}.Day16.part1, Solutions.Y{{YEAR}}.Day16.part2)
+    , (Solutions.Y{{YEAR}}.Day17.part1, Solutions.Y{{YEAR}}.Day17.part2)
+    , (Solutions.Y{{YEAR}}.Day18.part1, Solutions.Y{{YEAR}}.Day18.part2)
+    , (Solutions.Y{{YEAR}}.Day19.part1, Solutions.Y{{YEAR}}.Day19.part2)
+    , (Solutions.Y{{YEAR}}.Day20.part1, Solutions.Y{{YEAR}}.Day20.part2)
+    , (Solutions.Y{{YEAR}}.Day21.part1, Solutions.Y{{YEAR}}.Day21.part2)
+    , (Solutions.Y{{YEAR}}.Day22.part1, Solutions.Y{{YEAR}}.Day22.part2)
+    , (Solutions.Y{{YEAR}}.Day23.part1, Solutions.Y{{YEAR}}.Day23.part2)
+    , (Solutions.Y{{YEAR}}.Day24.part1, Solutions.Y{{YEAR}}.Day24.part2)
+    , (Solutions.Y{{YEAR}}.Day25.part1, Solutions.Y{{YEAR}}.Day25.part2)
+    ]
