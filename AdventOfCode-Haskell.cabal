@@ -29,6 +29,7 @@ executable AdventOfCode-Haskell
     other-modules: OptionsParser
         , Utils.Matrix
         , Utils.Geometry
+        , Utils.SplitOn
         , Solutions.Y2015
         , Solutions.Y2015.Day1
         , Solutions.Y2015.Day2

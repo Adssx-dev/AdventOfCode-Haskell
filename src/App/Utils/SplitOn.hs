@@ -1,4 +1,5 @@
-module SplitOn where
+module Utils.SplitOn 
+where
 
 -- Split a list on a given predicate
 splitOn :: (a -> Bool) -> [a] -> [[a]]
