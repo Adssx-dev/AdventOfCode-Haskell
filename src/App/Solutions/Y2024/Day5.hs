@@ -11,6 +11,7 @@ import Debug.Trace
 import Data.List
 import qualified Data.Set as Set
 import Utils.SplitOn
+import Utils.List
 
 type RuleSet = Set.Set (Int, Int)
 
@@ -42,7 +43,7 @@ parseRules (current:remaining) rules updates = case length current of
         0 -> parseRules remaining rules updates
         5 -> parseRules remaining (Set.insert newRule rules) updates
         _ -> parseRules remaining rules (newUpdate:updates)
-    where 
+    where
         newRule = tuplify2 $ (map read $ splitOn (=='|') current :: [Int])
         newUpdate = map read $ splitOn (==',') current :: [Int]
 
@@ -51,6 +52,28 @@ tuplify2 [x,y] = (x,y)
 middleValue list = list !! div (length list)  2
 
 
-
 part2 :: [Char] -> Maybe Int
-part2 inputStr = Nothing
+part2 inputStr = Just $ sum (map (reorderAndValidate rules) (filter (not . isOrderOk rules) updates))
+    where
+        (rules, updates) = parseRules (lines inputStr) Set.empty []
+
+-- a = ([Int], [Int])
+reorderAndValidate :: RuleSet -> [Int] -> Int
+reorderAndValidate rules update =  middleValue $ snd result
+    where
+        checks = cycle $ generateAllPairs $ length update
+        result = until (isOrderOk rules . snd) (reorderOnce rules) (checks, update)
+
+reorderOnce :: RuleSet -> ([(Int, Int)], [Int]) -> ([(Int, Int)], [Int])
+reorderOnce rules ((a, b):nextComps, update) = (nextComps, newUpdate)
+    where
+        first = update !! a
+        second = update !! b
+        newUpdate = if isRuleOk rules first second
+            then update
+            else swapTwo a b update
+
+
+
+
+

@@ -30,6 +30,7 @@ executable AdventOfCode-Haskell
         , Utils.Matrix
         , Utils.Geometry
         , Utils.SplitOn
+        , Utils.List
         , Solutions.Y2015
         , Solutions.Y2015.Day1
         , Solutions.Y2015.Day2
