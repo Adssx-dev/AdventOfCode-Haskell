@@ -25,12 +25,19 @@ extra-source-files: CHANGELOG.md
 executable AdventOfCode-Haskell
     main-is:          Main.hs
 
+    ghc-options:
+        -O2
+        -threaded
+        -fprof-auto
+        "-with-rtsopts=-N"
+
     -- Modules included in this executable, other than Main.
     other-modules: OptionsParser
         , Utils.Matrix
         , Utils.Geometry
         , Utils.SplitOn
         , Utils.List
+        , Utils.Tuple
         , Solutions.Y2015
         , Solutions.Y2015.Day1
         , Solutions.Y2015.Day2
@@ -292,8 +299,8 @@ executable AdventOfCode-Haskell
         , Solutions.Y2024.Day24
         , Solutions.Y2024.Day25
 
-    -- LANGUAGE extensions used by modules in this package.
-    -- other-extensions:
+    
+    
     build-depends:    
         base ^>=4.17.2.0
         , containers
