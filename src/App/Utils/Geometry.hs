@@ -19,6 +19,10 @@ getTranslationVector Point{x=x1, y=y1} Point{x=x2, y=y2} = Vector{dx = x2 - x1, 
 reverseVector :: Vector -> Vector
 reverseVector Vector{..} = Vector{dx = -1 * dx, dy = -1 * dy} 
 
+getNeighbors4 Point{ .. } = [Point{x=x-1, y=y}, Point{x=x, y=y-1}, Point{x=x+1, y=y}, Point{x=x, y=y+1}]
+
+getNeighbors8 Point{ .. } = [Point{x=x-1, y=y}, Point{x=x-1, y=y-1}, Point{x=x, y=y-1}, Point{x=x+1, y=y-1}, Point{x=x+1, y=y}, Point{x=x, y=y+1}, Point{x=x, y=y+1}, Point{x=x-1, y=y+1}]
+
 apply :: Vector -> Point -> Point
 apply Vector{ .. } Point{ .. } = Point{x=x+dx, y=y+dy}
 
