@@ -11,3 +11,6 @@ swapTwo f s xs = zipWith (\x y ->
 
 pairs :: [a] -> [(a, a)]
 pairs list = [(x,y) | (x:ys) <- tails list, y <- ys]
+
+safeHead [] = Nothing
+safeHead (x:xs) = Just x
