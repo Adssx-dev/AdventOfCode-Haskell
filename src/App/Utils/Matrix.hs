@@ -14,9 +14,10 @@ diagonals = map concat
                     (iterate ([]:) [])
 
 toCoordinateMap :: [[a]] -> Map.Map Point a
-toCoordinateMap mat = Map.fromList list
-    where
-        list = concat $ zipWith 
+toCoordinateMap mat = Map.fromList $ toCoordinateList mat
+
+toCoordinateList :: [[a]] -> [(Point, a)]
+toCoordinateList mat = concat $ zipWith 
             (\row lst -> map (\(col, value) -> (Point{x=col, y=row}, value)) lst) 
             [0..] -- row coordinates
             (map (zip [0..]) mat) -- col coordinate + value
