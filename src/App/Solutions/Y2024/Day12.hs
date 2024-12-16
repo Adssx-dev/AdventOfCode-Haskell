@@ -20,49 +20,68 @@ data Area = Area
 
 
 part1 :: [Char] -> Maybe Int
-part1 inputStr = Nothing
+part1 inputStr = Just $ test garden
     where
-        garden = toCoordinateMap $ lines inputStr
+        garden = toCoordinateList $ lines inputStr
 
-
+-- trace (show $ map (\x -> (x, perimeter x, area x)) allGroups) 
 test :: [(Point, Char)] -> Int
-test list = 0
+test list = sum $ map (\x -> perimeter x * area x) allGroups
     where
-        x = map (\el -> (snd $ head el, map fst el)) $
-            groupBy (\x y -> fst x == fst y) $
-            sortBy (\a b -> compare (fst a) (fst b)) $ list
+        allGroups = concatMap (\x -> merge (snd x) []) x
+        x = map (\el -> (snd $ head el, Set.fromList $ map fst el)) $
+            groupBy (\x y -> snd x == snd y) $
+            sortBy (\a b -> compare (snd a) (snd b)) $ list
 
-
-merge :: Set.Set Point -> Set.Set Point -> [Set.Set Point]
-merge pool constructed = []
+test2 :: [(Point, Char)] -> Int
+test2 list = trace (show (map (\x -> (perimeterPt2 x, area x)) allGroups)) sum $ map (\x -> perimeterPt2 x * area x) allGroups
     where
-        firstElem = head . Set.toList $ pool
-        newPool1 = Set.delete firstElem pool
-        neighbors = Set.fromList $  getNeighbors4 firstElem
-        foundNeighbors = Set.union newPool1 neighbors
-        newPool2 = Set.difference newPool1 foundNeighbors
+        allGroups = concatMap (\x -> merge (snd x) []) x
+        x = map (\el -> (snd $ head el, Set.fromList $ map fst el)) $
+            groupBy (\x y -> snd x == snd y) $
+            sortBy (\a b -> compare (snd a) (snd b)) $ list
 
+merge :: Set.Set Point -> [Set.Set Point] -> [Set.Set Point]
+merge pool res = if Set.null pool
+    then res
+    else merge poolAfterMerge (mergedGroup:res)
+    where
+        firstElem = headOfSet pool
+        newPool = Set.delete firstElem pool
+        (poolAfterMerge, mergedGroup) = mergeOne firstElem (pool, Set.empty)
 
--- findArea :: Map.Map Point Char -> [Area] -> Set.Set Point -> [Area]
--- findArea garden allAreas candidates = if Set.null candidates
---         then allAreas
---         else findArea garden (newArea:allAreas) (Set.difference candidates allUsedPoints)
---     where
---         (newArea, newCandidates) = findPointsInArea garden
---         currentCand = map (`Map.lookup` garden) candidates
---         allUsedPoints
+area :: Set.Set a -> Int
+area = Set.size
 
+perimeter :: Set.Set Point -> Int
+perimeter set = length x
+    where
+        asList = Set.toList set
+        x =  concatMap (filter (`notElem` asList) . getNeighbors4) asList
 
+perimeterPt2 :: Set.Set Point -> Int
+perimeterPt2 set = length grouped
+    where
+        asList = Set.toList set
+        x = Set.fromList $ concatMap (filter (`notElem` asList) . getNeighbors4) asList
+        grouped = merge x []
 
+headOfSet = head . Set.toList
 
--- findPointsInArea :: Map.Map Point Char -> Area -> Set.Set Point -> Point -> (Area, Set.Set Point)
--- findPointsInArea garden currentArea futureCandidates pos = if currentPointValue == symbol currentArea
---         then 
---         else
---     where
---         currentPointValue = Map.lookup pos garden
---         neighbors = getNeighbors4 pos
+mergeOne ::  Point -> (Set.Set Point, Set.Set Point) -> (Set.Set Point, Set.Set Point)
+mergeOne point (pool, res) = if Set.member point pool
+        then (p4, Set.insert point r4)
+        else (pool, res)
+    where
+        neighbors = getNeighbors4 point
+        newPool = Set.delete point pool
+        (p1, r1) = mergeOne (head neighbors) (newPool, res)
+        (p2, r2) = mergeOne (neighbors !! 1) (p1, r1)
+        (p3, r3) = mergeOne (neighbors !! 2) (p2, r2)
+        (p4, r4) = mergeOne (neighbors !! 3) (p3, r3)
 
 
 part2 :: [Char] -> Maybe Int
-part2 inputStr = Nothing
+part2 inputStr = Just $ test2 garden
+    where
+        garden = toCoordinateList $ lines inputStr

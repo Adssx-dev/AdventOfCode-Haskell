@@ -21,6 +21,10 @@ reverseVector Vector{..} = Vector{dx = -1 * dx, dy = -1 * dy}
 
 getNeighbors4 Point{ .. } = [Point{x=x-1, y=y}, Point{x=x, y=y-1}, Point{x=x+1, y=y}, Point{x=x, y=y+1}]
 
+getNeighbors2UD Point{ .. } = [Point{x=x, y=y-1}, Point{x=x, y=y+1}]
+
+getNeighbors2LR Point{ .. } = [Point{x=x-1, y=y},  Point{x=x+1, y=y}]
+
 getNeighbors8 Point{ .. } = [Point{x=x-1, y=y}, Point{x=x-1, y=y-1}, Point{x=x, y=y-1}, Point{x=x+1, y=y-1}, Point{x=x+1, y=y}, Point{x=x, y=y+1}, Point{x=x, y=y+1}, Point{x=x-1, y=y+1}]
 
 apply :: Vector -> Point -> Point
