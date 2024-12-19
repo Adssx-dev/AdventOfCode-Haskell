@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 module Solutions.Y2024.Day12
 ( part1
 , part2
@@ -20,28 +21,29 @@ data Area = Area
 
 
 part1 :: [Char] -> Maybe Int
-part1 inputStr = Just $ test garden
+part1 inputStr = Just $ solvePt1 garden
     where
         garden = toCoordinateList $ lines inputStr
 
--- trace (show $ map (\x -> (x, perimeter x, area x)) allGroups) 
-test :: [(Point, Char)] -> Int
-test list = sum $ map (\x -> perimeter x * area x) allGroups
+solvePt1 :: [(Point, Char)] -> Int
+solvePt1 list = trace (show (map (\x -> (area x , perimeter x)) allGroups)) sum $ map (\x -> perimeter x * area x) allGroups
     where
         allGroups = concatMap (\x -> merge (snd x) []) x
         x = map (\el -> (snd $ head el, Set.fromList $ map fst el)) $
             groupBy (\x y -> snd x == snd y) $
             sortBy (\a b -> compare (snd a) (snd b)) $ list
 
-test2 :: [(Point, Char)] -> Int
-test2 list = trace (show (map (\x -> (perimeterPt2 x, area x)) allGroups)) sum $ map (\x -> perimeterPt2 x * area x) allGroups
+solvePt2 :: [(Point, Char)] -> Int
+solvePt2 list =  trace (show (map (\x -> (area x, perimeterPt2 x)) allGroups)) sum $ map (\x -> perimeterPt2 x * area x) allGroups
     where
         allGroups = concatMap (\x -> merge (snd x) []) x
         x = map (\el -> (snd $ head el, Set.fromList $ map fst el)) $
             groupBy (\x y -> snd x == snd y) $
             sortBy (\a b -> compare (snd a) (snd b)) $ list
 
-merge :: Set.Set Point -> [Set.Set Point] -> [Set.Set Point]
+merge :: Set.Set Point ->
+        [Set.Set Point] ->
+        [Set.Set Point]
 merge pool res = if Set.null pool
     then res
     else merge poolAfterMerge (mergedGroup:res)
@@ -60,11 +62,30 @@ perimeter set = length x
         x =  concatMap (filter (`notElem` asList) . getNeighbors4) asList
 
 perimeterPt2 :: Set.Set Point -> Int
-perimeterPt2 set = length grouped
+perimeterPt2 set = sum $ map (countCorners set) (Set.toList set)
+
+isCorner :: Set.Set Point -> (Point, Point, Point) -> Bool
+isCorner area (right1, diag, right2) = 
+        not (right1InSet || right2InSet) ||
+        (right1InSet && right2InSet && not diagInSet)
     where
-        asList = Set.toList set
-        x = Set.fromList $ concatMap (filter (`notElem` asList) . getNeighbors4) asList
-        grouped = merge x []
+        right1InSet = Set.member right1 area
+        diagInSet = Set.member diag area
+        right2InSet = Set.member right2 area
+
+countCorners :: Set.Set Point -> Point -> Int
+countCorners area point = length $ filter id $ map (isCorner area) corners
+    where
+        corners = generateCorners point
+
+generateCorners :: Point -> [(Point, Point, Point)]
+generateCorners Point{..} = [
+        (Point{x=x-1, y=y}, Point{x=x-1, y=y-1}, Point{x=x, y=y-1}),
+        (Point{x=x, y=y-1}, Point{x=x+1, y=y-1}, Point{x=x+1, y=y}),
+        (Point{x=x+1, y=y}, Point{x=x+1, y=y+1}, Point{x=x, y=y+1}),
+        (Point{x=x, y=y+1}, Point{x=x-1, y=y+1}, Point{x=x-1, y=y})
+    ]
+
 
 headOfSet = head . Set.toList
 
@@ -82,6 +103,6 @@ mergeOne point (pool, res) = if Set.member point pool
 
 
 part2 :: [Char] -> Maybe Int
-part2 inputStr = Just $ test2 garden
+part2 inputStr = Just $ solvePt2 garden
     where
         garden = toCoordinateList $ lines inputStr
