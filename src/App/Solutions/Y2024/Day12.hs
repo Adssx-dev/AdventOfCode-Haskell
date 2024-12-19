@@ -26,7 +26,7 @@ part1 inputStr = Just $ solvePt1 garden
         garden = toCoordinateList $ lines inputStr
 
 solvePt1 :: [(Point, Char)] -> Int
-solvePt1 list = trace (show (map (\x -> (area x , perimeter x)) allGroups)) sum $ map (\x -> perimeter x * area x) allGroups
+solvePt1 list = sum $ map (\x -> perimeter x * area x) allGroups
     where
         allGroups = concatMap (\x -> merge (snd x) []) x
         x = map (\el -> (snd $ head el, Set.fromList $ map fst el)) $
@@ -34,7 +34,7 @@ solvePt1 list = trace (show (map (\x -> (area x , perimeter x)) allGroups)) sum 
             sortBy (\a b -> compare (snd a) (snd b)) $ list
 
 solvePt2 :: [(Point, Char)] -> Int
-solvePt2 list =  trace (show (map (\x -> (area x, perimeterPt2 x)) allGroups)) sum $ map (\x -> perimeterPt2 x * area x) allGroups
+solvePt2 list = sum $ map (\x -> perimeterPt2 x * area x) allGroups
     where
         allGroups = concatMap (\x -> merge (snd x) []) x
         x = map (\el -> (snd $ head el, Set.fromList $ map fst el)) $

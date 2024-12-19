@@ -13,6 +13,7 @@ data Vector = Vector
     , dy :: Int
     } deriving (Eq, Show, Ord)
 
+
 getTranslationVector :: Point -> Point -> Vector
 getTranslationVector Point{x=x1, y=y1} Point{x=x2, y=y2} = Vector{dx = x2 - x1, dy = y2 - y1}
 
