@@ -2,6 +2,8 @@
 module Utils.Geometry
 where
 
+import Utils.Math
+
 data Point = Point
     { x :: Int
     , y :: Int
@@ -35,6 +37,9 @@ getNeighbors8 Point{ .. } = [
     Point{x=x+1, y=y+1}, 
     Point{x=x, y=y+1}, 
     Point{x=x-1, y=y+1}]
+
+warpInBounds :: Int -> Int -> Point -> Point
+warpInBounds gridWidth gridHeight Point{..} = Point{x=x `posMod` gridWidth, y = y `posMod` gridHeight}
 
 apply :: Vector -> Point -> Point
 apply Vector{ .. } Point{ .. } = Point{x=x+dx, y=y+dy}

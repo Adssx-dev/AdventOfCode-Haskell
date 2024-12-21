@@ -38,6 +38,7 @@ executable AdventOfCode-Haskell
         , Utils.SplitOn
         , Utils.List
         , Utils.Tuple
+        , Utils.Math
         , Solutions.Y2015
         , Solutions.Y2015.Day1
         , Solutions.Y2015.Day2
