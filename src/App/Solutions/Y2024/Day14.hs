@@ -40,7 +40,7 @@ step gridWidth gridHeight Robot{..} = Robot
     , velocity=velocity}
 
 countQuadrants :: Int -> Int -> [Robot] -> Int
-countQuadrants gridWidth gridHeight robots = trace (show (xCut, yCut, q1, q2, q3, q4)) $ q1 * q2 * q3 * q4
+countQuadrants gridWidth gridHeight robots = q1 * q2 * q3 * q4
     where
         xCut = gridWidth `div` 2
         yCut = gridHeight `div` 2
@@ -51,4 +51,10 @@ countQuadrants gridWidth gridHeight robots = trace (show (xCut, yCut, q1, q2, q3
 
 
 part2 :: [Char] -> Maybe Int
-part2 inputStr = Nothing
+part2 inputStr = Just $ fst $ minimumBy (\x y -> compare (snd x) (snd y)) allStepsValues
+    where
+        robots = map parseRobot $ lines inputStr
+        gridWidth = 101
+        gridHeight = 103
+        list = iterate (simulateRobots gridWidth gridHeight) robots
+        allStepsValues = zip [0..] $ take 10000 $ map (countQuadrants gridWidth gridHeight) list
