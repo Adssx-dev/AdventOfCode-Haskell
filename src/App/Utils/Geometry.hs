@@ -47,3 +47,11 @@ apply Vector{ .. } Point{ .. } = Point{x=x+dx, y=y+dy}
 turnRight Vector{ .. } = Vector {dx = -1 * dy, dy =  dx}
 
 turnLeft Vector{ .. } = Vector {dx =  dy, dy = -1 * dx}
+
+-- the origin is at the top left corner (Y increases when going down, x when goin right)
+vectorFromAscii :: Char -> Vector
+vectorFromAscii '^' = Vector{dx =  0, dy = -1}
+vectorFromAscii '>' = Vector{dx =  1, dy =  0}
+vectorFromAscii 'v' = Vector{dx =  0, dy =  1}
+vectorFromAscii '<' = Vector{dx = -1, dy =  0}
+vectorFromAscii c = error $ "Forbidden character in ASCII to vector : " ++  show c

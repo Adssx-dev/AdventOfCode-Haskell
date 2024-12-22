@@ -14,3 +14,10 @@ pairs list = [(x,y) | (x:ys) <- tails list, y <- ys]
 
 safeHead [] = Nothing
 safeHead (x:xs) = Just x
+
+-- Split a list on a given predicate
+splitOn :: (a -> Bool) -> [a] -> [[a]]
+splitOn p s =  case dropWhile p s of
+                      [] -> []
+                      s' -> w : splitOn p s''
+                            where (w, s'') = break p s'

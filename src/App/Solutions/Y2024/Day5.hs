@@ -10,7 +10,6 @@ import System.IO
 import Debug.Trace
 import Data.List
 import qualified Data.Set as Set
-import Utils.SplitOn
 import Utils.List
 
 type RuleSet = Set.Set (Int, Int)
