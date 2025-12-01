@@ -10,6 +10,7 @@ import Solutions.Y2021
 import Solutions.Y2022
 import Solutions.Y2023
 import Solutions.Y2024
+import Solutions.Y2025
 import qualified Data.Map as Map
 
 import OptionsParser
@@ -37,6 +38,7 @@ globalMap = Map.fromList . zip [2015..] $
     , Solutions.Y2022.dayMap
     , Solutions.Y2023.dayMap
     , Solutions.Y2024.dayMap
+    , Solutions.Y2025.dayMap
     ]
 
 main = do

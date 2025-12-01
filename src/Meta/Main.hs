@@ -62,7 +62,7 @@ main = do
 
     generateFolder year
     dayTemplate <- loadDayTemplateFile
-    mapM_ (createDayFile (T.pack dayTemplate) year) [1..25] 
+    mapM_ (createDayFile (T.pack dayTemplate) year) [1..12] 
     createYearFile year
 
 
