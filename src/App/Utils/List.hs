@@ -21,3 +21,9 @@ splitOn p s =  case dropWhile p s of
                       [] -> []
                       s' -> w : splitOn p s''
                             where (w, s'') = break p s'
+
+-- Remove nth element of the list, indes starts at 0
+removeAt :: Int -> [a] -> [a]
+removeAt _ [] = []
+removeAt 0 (x:xs) = xs
+removeAt n (x:xs) = x : removeAt (n-1) xs
