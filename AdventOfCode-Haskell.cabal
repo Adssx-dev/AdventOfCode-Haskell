@@ -33,11 +33,12 @@ executable AdventOfCode-Haskell
 
     -- Modules included in this executable, other than Main.
     other-modules: OptionsParser
-        , Utils.Matrix
         , Utils.Geometry
         , Utils.List
-        , Utils.Tuple
+        , Utils.Map2D
         , Utils.Math
+        , Utils.Matrix
+        , Utils.Tuple
         , Solutions.Y2015
         , Solutions.Y2015.Day1
         , Solutions.Y2015.Day2
