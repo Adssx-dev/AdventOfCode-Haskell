@@ -9,9 +9,10 @@ import System.IO
 import Debug.Trace
 import Data.List
 import Utils.List
+import Utils.Geometry
 
 data Range = Range Int Int
-type Id = Int 
+type Id = Int
 
 parseInput :: [Char] -> ([Range], [Id])
 parseInput inputStr = (rangesParsed, idsParsed)
@@ -30,8 +31,19 @@ part1 inputStr = Just $ length $ filter (isIdValid ranges) ids
         (ranges, ids) = parseInput inputStr
 
 
-
-
-
 part2 :: [Char] -> Maybe Int
-part2 inputStr = Nothing
+part2 inputStr = Just $ sum $ map rangeSize finalRanges
+    where
+        (ranges, ids) = parseInput inputStr
+        finalRanges = foldl smartInsert [] ranges
+
+-- Insert the range and if there is a collision, merge the ranges 
+smartInsert :: [Range] -> Range -> [Range]
+smartInsert [] newRange = [newRange]
+smartInsert ((Range a1 a2):initialRanges) (Range b1 b2) = if isCollision
+    then smartInsert initialRanges (Range (min a1 b1) (max a2 b2))
+    else Range a1 a2:smartInsert initialRanges (Range b1 b2)
+    where
+        isCollision = collision1d a1 a2 b1 b2
+
+rangeSize (Range a b) = b - a + 1
