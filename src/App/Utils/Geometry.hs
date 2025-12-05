@@ -20,7 +20,7 @@ getTranslationVector :: Point -> Point -> Vector
 getTranslationVector Point{x=x1, y=y1} Point{x=x2, y=y2} = Vector{dx = x2 - x1, dy = y2 - y1}
 
 reverseVector :: Vector -> Vector
-reverseVector Vector{..} = Vector{dx = -1 * dx, dy = -1 * dy} 
+reverseVector Vector{..} = Vector{dx = -1 * dx, dy = -1 * dy}
 
 getNeighbors4 Point{ .. } = [Point{x=x-1, y=y}, Point{x=x, y=y-1}, Point{x=x+1, y=y}, Point{x=x, y=y+1}]
 
@@ -29,13 +29,13 @@ getNeighbors2UD Point{ .. } = [Point{x=x, y=y-1}, Point{x=x, y=y+1}]
 getNeighbors2LR Point{ .. } = [Point{x=x-1, y=y},  Point{x=x+1, y=y}]
 
 getNeighbors8 Point{ .. } = [
-    Point{x=x-1, y=y}, 
-    Point{x=x-1, y=y-1}, 
-    Point{x=x, y=y-1}, 
-    Point{x=x+1, y=y-1}, 
-    Point{x=x+1, y=y}, 
-    Point{x=x+1, y=y+1}, 
-    Point{x=x, y=y+1}, 
+    Point{x=x-1, y=y},
+    Point{x=x-1, y=y-1},
+    Point{x=x, y=y-1},
+    Point{x=x+1, y=y-1},
+    Point{x=x+1, y=y},
+    Point{x=x+1, y=y+1},
+    Point{x=x, y=y+1},
     Point{x=x-1, y=y+1}]
 
 warpInBounds :: Int -> Int -> Point -> Point
@@ -55,3 +55,7 @@ vectorFromAscii '>' = Vector{dx =  1, dy =  0}
 vectorFromAscii 'v' = Vector{dx =  0, dy =  1}
 vectorFromAscii '<' = Vector{dx = -1, dy =  0}
 vectorFromAscii c = error $ "Forbidden character in ASCII to vector : " ++  show c
+
+
+collision1d :: Int -> Int -> Int -> Int -> Bool
+collision1d a1 a2 b1 b2 = max a1 b1 <= (min a2 b2)
