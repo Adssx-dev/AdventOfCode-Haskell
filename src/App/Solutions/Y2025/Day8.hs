@@ -45,11 +45,10 @@ data Status = Status
 computeDistances :: [Point3] -> [DistanceEntry]
 computeDistances points = sort $ filter (\de -> distance de /= 0) distances
     where
-        --distances = concatMap (\p -> map (\p2-> DistanceEntry{p1=p, p2=p2, distance=squaredLinearDistance p p2}) points) points
         distances = concat $ zipWith (\p1 lst -> map (\p2-> DistanceEntry{p1=p1, p2=p2, distance=squaredLinearDistance p1 p2}) lst) (init points) (tails points)
 
 
-simulate distances = until (\x ->  iterationCount x == 1000) stepSimulation initialStatus
+simulate endCondition distances = until endCondition stepSimulation initialStatus
     where
         initialStatus = Status{distances=distances, circuits=[], iterationCount=0}
 
@@ -57,27 +56,39 @@ stepSimulation :: Status -> Status
 stepSimulation Status{..} = Status {distances=remainingDistances, circuits=newCircuit:remainingAfterP2, iterationCount=iterationCount+1}
     where
         (shortestDistance:remainingDistances) = distances
-        (setOfP1, remainingAfterP1) = trace (show shortestDistance) partition (Set.member (p1 shortestDistance) . points) circuits
+        (setOfP1, remainingAfterP1) = partition (Set.member (p1 shortestDistance) . points) circuits
         (setOfP2, remainingAfterP2) = partition (Set.member (p2 shortestDistance) . points) remainingAfterP1
         newCircuit = case (setOfP1, setOfP2) of
-            ([], []) -> trace ("cas 1") Circuit{points=Set.fromList [p1 shortestDistance, p2 shortestDistance], connections=[shortestDistance]}
-            ([sp1], []) -> trace ("cas 2") Circuit{points=Set.insert (p2 shortestDistance) (points sp1), connections=shortestDistance:connections sp1}
-            ([], [sp2]) -> trace ("cas 3") Circuit{points=Set.insert (p1 shortestDistance) (points sp2), connections=shortestDistance:connections sp2}
-            ([sp1], [sp2]) -> trace ("cas 4") Circuit{points=Set.union (points sp1) (points sp2), connections=shortestDistance:connections sp1 ++ connections sp2}
+            ([], []) -> Circuit{points=Set.fromList [p1 shortestDistance, p2 shortestDistance], connections=[shortestDistance]}
+            ([sp1], []) -> Circuit{points=Set.insert (p2 shortestDistance) (points sp1), connections=shortestDistance:connections sp1}
+            ([], [sp2]) -> Circuit{points=Set.insert (p1 shortestDistance) (points sp2), connections=shortestDistance:connections sp2}
+            ([sp1], [sp2]) -> Circuit{points=Set.union (points sp1) (points sp2), connections=shortestDistance:connections sp1 ++ connections sp2}
             x -> error "Invalid state: multiple sets contain the same point"
 
 calculateResults :: Status -> Int
 calculateResults status = product largestCircuits
     where
-        largestCircuits = take 3 $ sortBy (flip compare) $ map (length . Set.toList  . points) $ circuits status 
+        largestCircuits = take 3 $ sortBy (flip compare) $ map (length . Set.toList  . points) $ circuits status
+
+calculateResultsPt2 :: Status -> Int
+calculateResultsPt2 status = (x $ p1 lastConnection) * (x $ p2 lastConnection)
+    where
+        lastConnection = head $ connections $ head $ circuits status
+
 
 part1 :: [Char] -> Maybe Int
-part1 inputStr = trace (show $ sortBy (flip compare) $ map (length . Set.toList  . points) $ circuits simuResults) Just $ calculateResults simuResults
+part1 inputStr = Just $ calculateResults simuResults
     where
         pts = map (parsePoint3 ',') $ lines inputStr
         distances = computeDistances pts
-        simuResults = simulate distances
-    
+        simuResults = simulate endCondition distances
+        endCondition x = iterationCount x == 1000
+
 
 part2 :: [Char] -> Maybe Int
-part2 inputStr = Nothing
+part2 inputStr = Just $ calculateResultsPt2 simuResults
+    where
+        pts = map (parsePoint3 ',') $ lines inputStr
+        distances = computeDistances pts
+        simuResults = simulate endCondition distances
+        endCondition x = length (circuits x) == 1 && (1000 == length (Set.toList $ points $ head $ circuits x))
