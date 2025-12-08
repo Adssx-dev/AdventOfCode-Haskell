@@ -8,7 +8,7 @@ import System.IO
 import Debug.Trace
 import Data.List
 import Utils.Matrix
-import Utils.Geometry
+import Utils.Geometry2D
 
 data Machine = Machine{mat::Matrix2, vec :: Vector}
 

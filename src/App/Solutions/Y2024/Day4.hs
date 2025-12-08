@@ -8,7 +8,7 @@ import Debug.Trace
 import Data.List
 
 import Utils.Matrix
-import Utils.Geometry
+import Utils.Geometry2D
 import qualified Data.Map as Map 
 
 -- Part 1 treats as a list of lists and extracts rows, columns and diagonals in both ways

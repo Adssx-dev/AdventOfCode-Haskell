@@ -9,7 +9,7 @@ import System.IO
 import Debug.Trace
 import Data.List
 import Utils.List
-import Utils.Geometry
+import Utils.Geometry2D
 
 data Range = Range Int Int
 type Id = Int

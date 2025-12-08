@@ -5,7 +5,7 @@ where
 import Data.List
 import qualified Data.Map as Map
 
-import Utils.Geometry
+import Utils.Geometry2D
 
 
 -- Represent a matrix 2x2 with data as 

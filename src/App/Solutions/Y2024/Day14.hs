@@ -7,7 +7,7 @@ module Solutions.Y2024.Day14
 import System.IO
 import Debug.Trace
 import Data.List
-import Utils.Geometry
+import Utils.Geometry2D
 
 data Robot = Robot
     { pos :: Point

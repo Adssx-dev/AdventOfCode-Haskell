@@ -9,7 +9,7 @@ import Data.List
 import Utils.Matrix
 import qualified Data.Map as Map
 import Utils.Tuple
-import Utils.Geometry
+import Utils.Geometry2D
 import Utils.List
 
 part1 :: [Char] -> Maybe Int

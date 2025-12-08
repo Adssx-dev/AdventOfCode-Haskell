@@ -8,7 +8,7 @@ import Debug.Trace
 import Data.List
 import qualified Data.Map as Map
 import Utils.Map2D
-import Utils.Geometry
+import Utils.Geometry2D
 
 data Cell = Empty | Roll deriving (Eq, Show, Ord)
 

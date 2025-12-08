@@ -10,7 +10,7 @@ import Data.List
 import qualified Data.Map as Map
 import Utils.List
 import Utils.Matrix 
-import Utils.Geometry
+import Utils.Geometry2D
 
 data Cell = Crate | Wall | Empty | Character
     deriving(Ord, Show, Eq)

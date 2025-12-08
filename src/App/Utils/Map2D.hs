@@ -2,7 +2,7 @@ module Utils.Map2D
 where
 
 import qualified Data.Map as Map
-import Utils.Geometry
+import Utils.Geometry2D
 import Data.Maybe
 
 parseInputToMap2d parser inputStr = foldl Map.union Map.empty linesParsed

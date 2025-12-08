@@ -10,7 +10,7 @@ import Data.List
 import Utils.Matrix
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import Utils.Geometry
+import Utils.Geometry2D
 import Utils.List
 import Data.Maybe (listToMaybe)
 

@@ -1,5 +1,5 @@
 {-# LANGUAGE RecordWildCards #-}
-module Utils.Geometry
+module Utils.Geometry2D
 where
 
 import Utils.Math

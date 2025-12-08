@@ -9,7 +9,7 @@ import Debug.Trace
 import Data.List
 import Utils.Matrix
 import qualified Data.Map as Map
-import Utils.Geometry
+import Utils.Geometry2D
 import qualified Data.Set as Set
 import qualified Control.Applicative as Set.Set
 import Data.Either

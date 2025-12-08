@@ -9,7 +9,7 @@ import Data.List
 import Utils.Map2D (parseInputToMap2d)
 import qualified Data.Map as M
 import qualified Data.Set as Set
-import Utils.Geometry
+import Utils.Geometry2D
 
 -- Parsing
 data Cell = Source | Splitter | Empty deriving (Eq, Show)
