@@ -27,3 +27,21 @@ removeAt :: Int -> [a] -> [a]
 removeAt _ [] = []
 removeAt 0 (x:xs) = xs
 removeAt n (x:xs) = x : removeAt (n-1) xs
+
+-- Generate pairs of elements with a given function
+-- Works as a zip function in 2D only taking the top triangle matrix
+-- This is to use in case when f(a, b) == f(b, a) to avoid duplication
+--
+-- Example with the list [a, b, c, d] (X marks pairs that are made)
+-- |   | a | b | c | d |
+-- | a |   | X | X | X |
+-- | b |       | X | X |
+-- | c |           | X |
+-- | d |               |
+--
+-- The generated pairs are [f(a, b), f(a, c), f(a, d), f(b, c), f(b, d), f(c, d)] 
+generatePairsCommutative :: (a -> a -> b) -> [a] -> [b]
+generatePairsCommutative fcn points = concat $
+    zipWith (map . fcn)
+        (init points)
+        (tails points)

@@ -3,6 +3,7 @@ module Utils.Geometry2D
 where
 
 import Utils.Math
+import Utils.List (splitOn)
 
 data Point = Point
     { x :: Int
@@ -15,6 +16,14 @@ data Vector = Vector
     , dy :: Int
     } deriving (Eq, Show, Ord)
 
+parsePoint2 :: Char -> String -> Point
+parsePoint2 separator str = Point{x=read vx, y = read vy}
+    where
+        [vx, vy] = splitOn (==separator) str
+
+-- Get the area of the rectangle defined by both corners p1 and p2
+rectangleArea :: Point -> Point -> Int
+rectangleArea p1 p2 = (x p1 - x p2 + 1) * (y p1 - y p2 + 1)
 
 getTranslationVector :: Point -> Point -> Vector
 getTranslationVector Point{x=x1, y=y1} Point{x=x2, y=y2} = Vector{dx = x2 - x1, dy = y2 - y1}

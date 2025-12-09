@@ -10,6 +10,7 @@ import Debug.Trace
 import Data.List
 import Utils.Geometry3D
 import qualified Data.Set as Set
+import Utils.List
 
 -- -------
 -- |TYPES|
@@ -41,11 +42,11 @@ data Status = Status
 -- --------------
 -- |COMPUTATIONS|
 -- --------------
-
-computeDistances :: [Point3] -> [DistanceEntry]
-computeDistances points = sort $ filter (\de -> distance de /= 0) distances
-    where
-        distances = concat $ zipWith (\p1 lst -> map (\p2-> DistanceEntry{p1=p1, p2=p2, distance=squaredLinearDistance p1 p2}) lst) (init points) (tails points)
+computeDistances points = sort $ filter (\de -> distance de /= 0) $ generatePairsCommutative (\p1 p2-> DistanceEntry{p1=p1, p2=p2, distance=squaredLinearDistance p1 p2}) points
+-- computeDistances :: [Point3] -> [DistanceEntry]
+-- computeDistances points = sort $ filter (\de -> distance de /= 0) distances
+--     where
+--         distances = concat $ zipWith (\p1 lst -> map (\p2-> DistanceEntry{p1=p1, p2=p2, distance=squaredLinearDistance p1 p2}) lst) (init points) (tails points)
 
 
 simulate endCondition distances = until endCondition stepSimulation initialStatus
@@ -71,7 +72,7 @@ calculateResults status = product largestCircuits
         largestCircuits = take 3 $ sortBy (flip compare) $ map (length . Set.toList  . points) $ circuits status
 
 calculateResultsPt2 :: Status -> Int
-calculateResultsPt2 status = (x $ p1 lastConnection) * (x $ p2 lastConnection)
+calculateResultsPt2 status = x (p1 lastConnection) * x (p2 lastConnection)
     where
         lastConnection = head $ connections $ head $ circuits status
 
