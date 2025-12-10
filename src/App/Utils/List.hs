@@ -45,3 +45,15 @@ generatePairsCommutative fcn points = concat $
     zipWith (map . fcn)
         (init points)
         (tails points)
+
+-- Convert a list of indexes to the list of booleans associated (Zero-indexed)
+-- Ex: [1, 2, 3] => [False, True, True, True]
+-- Stops at the highest element
+indicesToBooleanList [] _ = []
+indicesToBooleanList (ind:indices) currentIndex = if currentIndex == ind
+    then True: indicesToBooleanList indices (currentIndex + 1) 
+    else False:indicesToBooleanList (ind:indices) (currentIndex + 1)
+
+
+removeFirstAndLast :: [a] -> [a]
+removeFirstAndLast = init . tail

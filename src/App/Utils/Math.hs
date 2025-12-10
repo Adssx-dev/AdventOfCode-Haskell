@@ -19,3 +19,6 @@ intArrayToValue :: Integral a => [a] -> a
 intArrayToValue = go 0
     where
         go = foldl (\ accum val -> accum * 10 + val)
+
+xor :: Eq a => a -> a -> Bool
+xor a b = a /= b
